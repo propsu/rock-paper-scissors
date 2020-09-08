@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, paper, scissors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo">Rock, paper, scissors</h1>
+    </header>
+    <div class="game">
+        <div class="ring">
+            <div class="healthbars">
+                <div class="healthbar">
+                    <div class="healthbar--bg">
+                        <div class="healthbar--progress">
+    
+                        </div>
+                    </div>
+                    <div class="healthbar--label">
+                        <h3>Player</h3>
+                    </div>
+                </div>
+                <h1 id="fightInfo">
+                    
+                </h1>
+                <div class="healthbar">
+                    <div class="healthbar--bg">
+                        <div class="healthbar--progress">
+    
+                        </div>
+                    </div>
+                    <div class="healthbar--label right">
+                        <h3>Computer</h3>
+                    </div>
+                </div>
+            </div>
+            <div id="fight">
+
+            </div>
+        </div>
+        <div class="menu">
+            <button class="action" data-move="rock">
+                <img src="images/rock.png" alt="Rock">
+            </button>
+            <button class="action" data-move="paper">            
+                <img src="images/paper.png" alt="Paper">
+            </button>
+            <button class="action" data-move="scissors">            
+                <img src="images/scissors.png" alt="Scissors">
+            </button>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
