@@ -13,11 +13,15 @@
         <h1 class="logo">Rock, paper, scissors</h1>
     </header>
     <div class="game">
+        <div class="end-titles--background hidden">
+            <h1 class="end-titles--header"></h1>
+            <button class="end-titles--new_game">New Game</button>
+        </div>
         <div class="ring">
             <div class="healthbars">
                 <div class="healthbar">
                     <div class="healthbar--bg">
-                        <div class="healthbar--progress">
+                        <div class="healthbar--progress" id="playerHealthbar">
     
                         </div>
                     </div>
@@ -30,7 +34,7 @@
                 </h1>
                 <div class="healthbar">
                     <div class="healthbar--bg">
-                        <div class="healthbar--progress">
+                        <div class="healthbar--progress" id="computerHealthbar">
     
                         </div>
                     </div>
@@ -40,6 +44,8 @@
                 </div>
             </div>
             <div id="fight">
+                <img class="hand-player1 hand" src="images/svg/rock.svg"/>
+                <img class="hand-player2 hand" src="images/svg/rock.svg"/>
 
             </div>
         </div>

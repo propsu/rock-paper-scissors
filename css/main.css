@@ -3,7 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+.hidden{
+    display:none !important;
+}
 body{
     background: #333;
     display: flex;
@@ -24,7 +26,7 @@ body{
     height: 600px;
     background: url('../images/ring.jpg');
     background-size: cover;
-
+    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -67,6 +69,7 @@ body{
 }
 .healthbar{
     padding: .5rem;
+    height: 90px;
 }
 .healthbar--bg{
     position: relative;
@@ -82,6 +85,7 @@ body{
     position: absolute;
     top:0;
     left:0;
+    transition: width .6s ease;
 }
 
 .healthbar--label{
@@ -100,11 +104,11 @@ body{
 }
 #fight{
     position: relative;
-    height: 100%;
+    height: calc(100% - 90px);
 }
 .hand{
     position: absolute;
-    z-index: 100;
+    z-index: 2;
 }
 
 .hand-player1{
@@ -115,4 +119,97 @@ body{
 .hand-player2{
     right: 0;
     top:0;
+    transform: rotate(180deg);
+}
+
+.end-titles--background{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background: rgba(0,0,0,.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 3;
+}
+
+.end-titles--header{
+    font-size: 4rem;
+    letter-spacing: 4px;
+}
+.end-titles--header.win{
+    color: green;
+}
+.end-titles--header.lose{
+    color: red;
+}
+
+.end-titles--new_game{
+    padding: 2rem;
+    background: rgba(255,255,255,.6);
+    border:none;
+    box-shadow: 0 0 5px 3px rgba(0,0,0,.6);
+    border-radius: 5px;
+    font-size: 2rem;
+    color: black;
+    transition: all .3s ease-in-out;
+}
+.end-titles--new_game:hover{
+    background: rgba(255,255,255,.9);
+
+}
+
+.hand-player1.shake{
+    animation-name: shakeHandLeft;
+    animation-timing-function: ease-in;
+}
+
+.hand-player2.shake{
+    animation-name: shakeHandRight;
+    animation-timing-function: ease-in;
+}
+
+@keyframes shakeHandLeft{
+    0%{
+        transform:rotate(60deg);  
+    }
+    20%{
+        transform:rotate(0deg);  
+    }
+    40%{
+        transform:rotate(60deg);  
+    }
+    60%{
+        transform:rotate(0);  
+    }
+    80%{
+        transform:rotate(60deg);  
+    }
+    100%{
+        transform:rotate(0);  
+    }
+}
+
+@keyframes shakeHandRight{
+    0%{
+        transform:rotate(240deg);  
+    }
+    20%{
+        transform:rotate(180deg);  
+    }
+    40%{
+        transform:rotate(240deg);  
+    }
+    60%{
+        transform:rotate(180deg);  
+    }
+    80%{
+        transform:rotate(240deg);  
+    }
+    100%{
+        transform:rotate(180deg);  
+    }
 }

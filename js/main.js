@@ -1,15 +1,36 @@
 document.addEventListener('DOMContentLoaded', function(){
     const game = {
         ring: document.querySelector('#fight'),
+        mainDiv: document.querySelector('.game'),
         actions: document.querySelectorAll('.action'),
+        hands: document.querySelectorAll('.hand'),
+        endTitles: {
+            background: document.querySelector('.end-titles--background'),
+            header: document.querySelector('.end-titles--header'),
+            button: document.querySelector('.end-titles--new_game'),
+        },
+        info: document.querySelector('#fightInfo'),
         moves: ['rock', 'paper', 'scissors'],
         advantages: {
             rock: 'scissors',
             scissors: 'paper',
             paper: 'rock', 
         },
-        info: document.querySelector('#fightInfo'),
+        player: {
+            health: 100,
+            healthbar: document.querySelector('#playerHealthbar'),
+        },
+        computer: {
+            health: 100,
+            healthbar: document.querySelector('#computerHealthbar'),
+        },
+        config: {
+            speed: .5,
+            rounds: 3,
+            count: 3,
+        },
         init(){
+            this.damage = 100 / this.config.rounds;
             this.bindEvents();
         },
         bindEvents(){
@@ -18,16 +39,18 @@ document.addEventListener('DOMContentLoaded', function(){
                     this.play(e.currentTarget.dataset.move);
                 });
             });
+
+            this.endTitles.button.addEventListener('click', this.resetGame.bind(this));
+
         },
         randComputerMove(){
-            let min = 0;
-            let max = 2;
-            let index = Math.floor(Math.random() * (max - min + 1) + min);
+            let index = Math.floor(Math.random() * 3);
 
             return this.moves[index];
         },
         checkWinner(p1, p2){
             let winner = 'Draw';
+
             if(this.advantages[p1] === p2)
                 winner = 'Player';
             if(this.advantages[p2] === p1)
@@ -36,18 +59,31 @@ document.addEventListener('DOMContentLoaded', function(){
             return winner;
         },
         play(p1){
-            this.ring.innerHTML = '';
+            this.replaceHand('hand-player1', 'rock');
+            this.replaceHand('hand-player2', 'rock');
             const p2 = this.randComputerMove();
-            this.count(3).then(res=>{
-                this.fight(p1, p2);
+            this.hands.forEach(hand=>{
+                hand.style.animationDuration = this.config.speed * this.config.count + 's';
+                hand.classList.add('shake');
+            });
+
+           
+            this.count(this.config.count).then(res=>{
+                this.hands.forEach(hand=>{
+                    hand.classList.remove('shake');
+                });
+
+                this.replaceHand('hand-player1', p1);
+                this.replaceHand('hand-player2', p2);
 
                 const winner = this.checkWinner(p1, p2);
+                this.takeDamage(winner.toLowerCase());
                 this.info.innerHTML = winner;
             });
             
         },
-        count(sec, speed = 1){
-            return new Promise((resolve, reject)=>{
+        count(sec){
+            return new Promise(resolve=>{
                 this.info.innerHTML = sec;
                 sec--;
 
@@ -62,23 +98,56 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     sec--;
                 
-                }, 1000 * speed);
+                }, 1000 * this.config.speed);
             });
         },
-        fight(p1, p2){
-            const handP1 = document.createElement('img');
-            handP1.src = 'images/'+p1+'.svg';
-            handP1.classList.add('hand-player1');
-            handP1.classList.add('hand');
+        replaceHand(handClass, move){
+            document.querySelector('.' + handClass).src = 'images/svg/' + move + '.svg';
+        },
+        createHand(player, move){
+            const hand = document.createElement('img');
+            hand.src = 'images/svg/'+move+'.svg';
+            hand.classList.add('hand-player' + player);
+            hand.classList.add('hand');
+            this.ring.append(hand);
+        },
+        takeDamage(player){
+            const victim = this.getOppositePlayer(player);
 
-            this.ring.append(handP1);
-            
-            const handP2 = document.createElement('img');
-            handP2.src = 'images/'+p2+'.svg';
-            handP2.classList.add('hand-player2');
-            handP2.classList.add('hand');
+            if(victim){
+                this[victim].health -= Math.ceil(this.damage);
+                this[victim].healthbar.style.width = this[victim].health + '%';
+                if(this[victim].health <= 0)
+                    this.endGame(player);
+            }
+        },
+        endGame(winner){
+            this.endTitles.header.classList.remove('win');
+            this.endTitles.header.classList.remove('lose');
 
-            this.ring.append(handP2);
+            const result = winner == 'player' ? 'Win' : 'Lose';
+
+            this.endTitles.background.classList.remove('hidden');
+            this.endTitles.header.classList.add(result.toLowerCase());
+            this.endTitles.header.innerHTML = result;
+
+        },
+        getOppositePlayer(player){
+            if(player == 'draw') 
+                return null;
+
+            return player == 'player' ? 'computer' : 'player';
+        },
+        resetGame(){
+            this.endTitles.background.classList.add('hidden');
+            this.player.health = 100;
+            this.player.healthbar.style.width = 100 + '%';
+
+            this.computer.health = 100;
+            this.computer.healthbar.style.width = 100 + '%';
+            this.info.innerHTML = '';
+            this.replaceHand('hand-player1', 'rock');
+            this.replaceHand('hand-player2', 'rock');
         }
     }
 
